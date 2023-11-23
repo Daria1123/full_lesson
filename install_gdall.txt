@@ -1,0 +1,28 @@
+Windows install gdal
+
+pip install pipwin
+pipwin install gdal
+pip install psycopg2
+pip install django-cors-headers
+
+GDAL_LIBRARY_PATH = r'C:\geo-project\venv\Lib\site-packages\osgeo\gdal304.dll'
+GEOS_LIBRARY_PATH = r'C:\geo-project\venv\Lib\site-packages\osgeo\geos_c.dll'
+pip install django-cors-headers 
+
+Ubuntu install
+sudo apt-get install gdal-bin
+sudo apt-get install libgdal-dev
+
+
+MacOs install
+brew install gdal
+conda install -c conda-forge gdal.
+
+
+REACT create 
+npx create-react-app my-app
+cd my-app
+npm start
+
+NPM OL
+npm install ol
