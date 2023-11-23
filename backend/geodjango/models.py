@@ -32,3 +32,17 @@ class Points(models.Model):
     id = models.IntegerField(primary_key=True, auto_created=True)
     name = models.CharField(max_length=255, verbose_name='Нэр')
     geom = models.GeometryField(max_length=255, verbose_name='Геом')
+
+
+class Entry(models.Model):
+
+    point = models.PointField()
+
+    @property
+    def lat_lng(self):
+        return list(getattr(self.point, 'coords', [])[::-1])
+
+
+class Ad(models.Model):
+    aimag = models.ForeignKey(Aimag, on_delete=models.CASCADE)
+    location = models.PointField()
