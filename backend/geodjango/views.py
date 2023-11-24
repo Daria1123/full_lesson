@@ -20,7 +20,8 @@ def json_load(data):
 from .models import (
     Aimag,
     Points,
-    Ad
+    Ad,
+    Home
 )
 
 def coordinate_to_point(coordinate, srid=4326):
@@ -92,8 +93,25 @@ class AimagApiView(View):
     @csrf_exempt
     def get(self, request):
         aimag = Aimag.objects.filter(id=12).first()
+        # home = Home.objects.first()
     
         data = json_load(aimag.geom.json)
+        
+        return JsonResponse(
+            {
+                'success': True,
+                'data': data
+            }
+        )
+
+class AimagAllApiView(View):
+
+    @csrf_exempt
+    def get(self, request):
+        aimags = Aimag.objects.all()
+    
+        for aimag in aimags:
+            print()
         
         return JsonResponse(
             {

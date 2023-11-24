@@ -46,3 +46,12 @@ class Entry(models.Model):
 class Ad(models.Model):
     aimag = models.ForeignKey(Aimag, on_delete=models.CASCADE)
     location = models.PointField()
+
+
+class Home(models.Model):
+    class Meta:
+        db_table = 'home'
+        managed = False
+    
+    name = models.CharField(max_length=255, verbose_name='Нэр')
+    geom = models.GeometryField(max_length=255, verbose_name='Геом')
