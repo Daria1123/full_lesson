@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework_gis.filters import InBBoxFilter
+
 from django.contrib.gis.geos import (
     Point,
     LineString
@@ -17,6 +19,9 @@ def json_load(data):
 
 from .models import (
     Aimag,
+    Points,
+    Ad,
+    Home
 )
 
 def coordinate_to_point(coordinate, srid=4326):
@@ -46,8 +51,8 @@ def make_lines(point1, point2):
 
 # 2 цэгийн хооронд дахь зай км
 def get_distance():
-    end =  Distances.objects.last()
-    start =  Distances.objects.first()
+    end =  Points.objects.last()
+    start =  Points.objects.first()
 
     p1 = start.geom
     p2 = end.geom
@@ -60,7 +65,7 @@ def get_distance():
 
 # Энэ цэг аль аймагт багтаж байгаа вэ
 def check_contains_point():
-    point =  Distances.objects.last()
+    point =  Points.objects.last()
 
     aimag_geom = Aimag.objects.filter(geom__contains=point.geom)
 
@@ -88,7 +93,7 @@ class AimagApiView(View):
     @csrf_exempt
     def get(self, request):
         aimag = Aimag.objects.filter(id=12).first()
-        print(aimag)
+        # home = Home.objects.first()
     
         data = json_load(aimag.geom.json)
         
@@ -99,5 +104,29 @@ class AimagApiView(View):
             }
         )
 
-# Жишээ ажиллах хэсэг
+class AimagAllApiView(View):
 
+    @csrf_exempt
+    def get(self, request):
+        aimags = Aimag.objects.all()
+    
+        for aimag in aimags:
+            print()
+        
+        return JsonResponse(
+            {
+                'success': True,
+                'data': data
+            }
+        )
+
+
+class AdView(View):
+
+    bbox_filter_field = 'location'
+    filter_backend = (InBBoxFilter)
+    queryset = Ad.objects.all()
+
+    def get(self, request):
+        points = request.GET['in_bbox']
+        print(points)
